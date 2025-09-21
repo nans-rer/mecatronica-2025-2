@@ -54,7 +54,7 @@ void loop() {
   delay(3000);
 
   // Cuarto modo - Gira hacia la izquierda
-
+  analogWrite(motorPinRENA, 100) // Volvemos a prender el motor derecho
   analogWrite(motorPinLENA, 0); // Apagamos el motor izquierdo
 
   digitalWrite(motorPinR1, LOW);
