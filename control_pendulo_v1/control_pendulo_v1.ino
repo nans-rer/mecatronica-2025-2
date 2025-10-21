@@ -1,6 +1,7 @@
 #include "I2Cdev.h"
-#include "MPU6050.h"
+#include "ADXL345.h"
 #include "Wire.h"
+
 
 int motorPinL1 = 7; // Pin direccion motor izquierdo 1
 int motorPinL2 = 8; // Pin direccion motor izquierdo 2
@@ -13,9 +14,10 @@ int motorPinRENA = 9; // Pin direccion motor derecho
 int motorSpeed = 100; // Velocidad del motor (0 = no se mueve & 255 = velocidad maxima):
 
 int ax, ay, az; // Valores sin procesar del acelerometro en x, y, z
-int gx, gy, gz; // Valores sin procesar del giroscopio en x, y, z
 
-MPU6050 sensor;
+float roll = 0, pitch = 0;
+
+ADXL345 sensor;
 
 void setup() {
   Wire.begin();
@@ -98,15 +100,23 @@ void motorRight() {
 
 void loop() {
   sensor.getAcceleration(&ax, &ay, &az);
-  sensor.getRotation(&gx, &gy, &gz); 
 
-  Serial.print("a[x y z] g[x y z]:\t");
+  float ax_f = (float)ax;
+  float ay_f = (float)ay;
+  float az_f = (float)az;
+
+  roll = atan2(ay_f, az_f) * 180.0 / PI;
+  pitch = atan2(-ax_f, sqrt(ay_f * ay_f + az_f * az_f)) * 180.0 / PI;
+  
+  Serial.print("a[x y z]:\t");
   Serial.print(ax); Serial.print("\t");
   Serial.print(ay); Serial.print("\t");
   Serial.print(az); Serial.print("\t");
-  Serial.print(gx); Serial.print("\t");
-  Serial.print(gy); Serial.print("\t");
-  Serial.println(gz);
+  Serial.print("Roll:\t");
+  Serial.print(roll); Serial.print("\t");
+  Serial.print("Pitch:\t");
+  Serial.println(pitch);
+
 
   delay(100);
    // put your main code here, to run repeatedly:
