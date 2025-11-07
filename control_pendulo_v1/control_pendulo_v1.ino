@@ -105,7 +105,7 @@ void loop() {
   float ay_f = (float)ay;
   float az_f = (float)az;
 
-  roll = atan2(ay_f, az_f) * 180.0 / PI;
+  roll = atan2(ay_f, -az_f) * 180.0 / PI;
   pitch = atan2(-ax_f, sqrt(ay_f * ay_f + az_f * az_f)) * 180.0 / PI;
   
   Serial.print("a[x y z]:\t");
@@ -119,5 +119,4 @@ void loop() {
 
 
   delay(100);
-   // put your main code here, to run repeatedly:
 }
